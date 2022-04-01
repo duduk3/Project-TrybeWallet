@@ -17,9 +17,7 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ADD_EXPENSES:
     return {
       ...state,
-      wallet: {
-        expenses: [Object.keys(action.expenses)],
-      },
+      expenses: [...Object.values(action.expenses)].filter((key) => key.codein !== 'BRLT'),
     };
   default:
     return state;

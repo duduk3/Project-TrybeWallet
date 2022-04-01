@@ -1,13 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import getCurrencies from '../services/Api';
+import { actionThunkCurrencies } from '../actions';
 
 class Despesas extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+      exchangeRates: {},
+    };
+  }
+
+  addExpenses = () => {
+    const { expenses } = this.props;
+    console.log(expenses);
+    this.setState({ expenses });
+  }
+
+  handleChange = ({ target }) => {
+    const { name } = target;
+    const value = target.type === 'checkbox' ? 'checked' : target.value;
+    this.setState({ [name]: value });
+  }
+
+  handleClick = () => {
+    // const { value, description, currency, method, tag } = this.state;
+    const { expenses } = this.props;
+    console.log(expenses);
+  }
+
   render() {
     const { currencies } = this.props;
     const data = [...currencies];
-    console.log(currencies);
+    console.log(typeof currencies);
+    const { value, description, currency, method, tag, expenses } = this.state;
+    console.log(expenses);
     return (
       <main>
         <form>
@@ -17,6 +50,8 @@ class Despesas extends React.Component {
               type="text"
               name="value"
               data-testid="value-input"
+              onChange={ this.handleChange }
+              value={ value }
             />
           </label>
 
@@ -26,15 +61,19 @@ class Despesas extends React.Component {
               type="text"
               name="description"
               data-testid="description-input"
+              onChange={ this.handleChange }
+              value={ description }
             />
           </label>
 
-          <label htmlFor="currencies">
+          <label htmlFor="currency">
             Moeda:
             <select
-              name="currencies"
+              name="currency"
               required
-              id="currencies"
+              id="currency"
+              onChange={ this.handleChange }
+              value={ currency }
             >
               {
                 data.map((elem, i) => (
@@ -46,13 +85,15 @@ class Despesas extends React.Component {
             </select>
           </label>
 
-          <label htmlFor="payment">
+          <label htmlFor="method">
             Método de Pagamento:
             <select
-              name="payment"
+              name="method"
               required
-              id="payment"
+              id="method"
               data-testid="method-input"
+              onChange={ this.handleChange }
+              value={ method }
             >
               <option value="dinheiro">Dinheiro</option>
               <option value="credito">Cartão de crédito</option>
@@ -60,22 +101,30 @@ class Despesas extends React.Component {
             </select>
           </label>
 
-          <label htmlFor="payment">
+          <label htmlFor="tag">
             Categoria:
             <select
-              name="category"
+              name="tag"
               required
-              id="category"
+              id="tag"
               data-testid="tag-input"
+              onChange={ this.handleChange }
+              value={ tag }
             >
-              <option value="food">Alimentação</option>
-              <option value="leisure">Lazer</option>
-              <option value="work">Trabalho</option>
-              <option value="transport">Transporte</option>
-              <option value="health">Saúde</option>
+              <option value="alimentação">Alimentação</option>
+              <option value="lazer">Lazer</option>
+              <option value="trabalho">Trabalho</option>
+              <option value="transporte">Transporte</option>
+              <option value="saúde">Saúde</option>
             </select>
           </label>
 
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar Depesa
+          </button>
         </form>
       </main>
     );
@@ -83,11 +132,16 @@ class Despesas extends React.Component {
 }
 
 Despesas.propType = {
-  currencies: PropTypes.arrayOf,
+  currencies: PropTypes.object,
+  expenses: PropTypes.object,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
-  currencies: state.wallet.currencies,
+  currencies: [...state.wallet.currencies],
 });
 
-export default connect(mapStateToProps)(Despesas);
+const mapDispatchToProps = (dispatch) => ({
+  expenses: () => dispatch(actionThunkCurrencies()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Despesas);

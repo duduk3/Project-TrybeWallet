@@ -15,8 +15,19 @@ export const actionThunkCurrencies = () => async (dispatch) => {
   dispatch(actionWallet());
   try {
     const wallet = await getCurrencies();
-    console.log(wallet);
     dispatch(actionAddCurrencies(wallet));
+    dispatch(actionAddExpenses(wallet));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const actionThunkExpenses = () => async (dispatch) => {
+  dispatch(actionWallet());
+  try {
+    const wallet = await getCurrencies();
+    console.log(wallet);
+    dispatch(actionAddExpenses(wallet));
   } catch (error) {
     console.log(error);
   }
