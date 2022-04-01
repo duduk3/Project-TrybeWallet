@@ -12,12 +12,14 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ADD_CURRENCIES:
     return {
       ...state,
-      currencies: [...Object.keys(action.currencies)].filter((key) => key !== 'USDT'),
+      currencies: [...Object.values(action.currencies)]
+        .filter((key) => key.codein !== 'USDT'),
     };
   case ADD_EXPENSES:
     return {
       ...state,
-      expenses: [...Object.values(action.expenses)].filter((key) => key.codein !== 'BRLT'),
+      expenses: [...Object.values(action.expenses)]
+        .filter((key) => key.codein !== 'BRLT'),
     };
   default:
     return state;

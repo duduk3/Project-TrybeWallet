@@ -1,26 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { actionThunkCurrencies } from '../actions';
 
 class Despesas extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      exchangeRates: {},
+      expenses: {
+        value: '',
+        description: '',
+        currency: '',
+        method: '',
+        tag: '',
+        exchangeRates: {},
+      },
     };
-  }
-
-  addExpenses = () => {
-    const { expenses } = this.props;
-    console.log(expenses);
-    this.setState({ expenses });
   }
 
   handleChange = ({ target }) => {
@@ -30,17 +25,14 @@ class Despesas extends React.Component {
   }
 
   handleClick = () => {
-    // const { value, description, currency, method, tag } = this.state;
-    const { expenses } = this.props;
-    console.log(expenses);
+    const { expenses: { value, description, currency, method, tag } } = this.state;
   }
 
   render() {
     const { currencies } = this.props;
     const data = [...currencies];
     console.log(typeof currencies);
-    const { value, description, currency, method, tag, expenses } = this.state;
-    console.log(expenses);
+    const { expenses: { value, description, currency, method, tag } } = this.state;
     return (
       <main>
         <form>
@@ -132,16 +124,11 @@ class Despesas extends React.Component {
 }
 
 Despesas.propType = {
-  currencies: PropTypes.object,
-  expenses: PropTypes.object,
+  currencies: PropTypes.objectOf(PropTypes.array),
 }.isRequired;
 
 const mapStateToProps = (state) => ({
   currencies: [...state.wallet.currencies],
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  expenses: () => dispatch(actionThunkCurrencies()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Despesas);
+export default connect(mapStateToProps)(Despesas);
