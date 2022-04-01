@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ProtoTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { actionAddUser } from '../actions';
 
 class Login extends React.Component {
@@ -84,8 +84,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  history: ProtoTypes.object,
-  email: ProtoTypes.string,
+  history: PropTypes.object,
+  email: PropTypes.string,
 }.isRequire;
 
 const mapDispatchToProps = (dispatch) => ({
