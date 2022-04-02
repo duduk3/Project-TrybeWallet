@@ -9,13 +9,12 @@ export const WALLET_API = 'WALLET_API';
 export const actionAddUser = (email) => ({ type: ADD_USER, email });
 export const actionWallet = () => ({ type: WALLET_API });
 export const actionAddCurrencies = (currencies) => ({ type: ADD_CURRENCIES, currencies });
-export const actionAddExpenses = (expenses) => ({ type: ADD_EXPENSES, expenses });
+export const actionAddExpenses = (expense) => ({ type: ADD_EXPENSES, expense });
 
 export const actionThunkCurrencies = () => async (dispatch) => {
   dispatch(actionWallet());
   try {
     const wallet = await getCurrencies();
-    console.log(wallet);
     dispatch(actionAddCurrencies(wallet));
   } catch (error) {
     console.log(error);
