@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionThunkCurrencies } from '../actions';
 import Header from '../components/Header';
-import Despesas from '../components/Despesas';
+import Expenses from '../components/Expenses';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -15,14 +15,14 @@ class Wallet extends React.Component {
     return (
       <div>
         <Header />
-        <Despesas />
+        <Expenses />
       </div>
     );
   }
 }
 
 Wallet.propTypes = {
-  currencies: PropTypes.object,
+  currencies: PropTypes.array,
 }.isRequired;
 
 const mapStateToProps = (state) => ({

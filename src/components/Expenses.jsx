@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import getCurrencies from '../services/Api';
 import { actionAddExpenses } from '../actions';
 
-class Despesas extends React.Component {
+class Expenses extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,8 +19,8 @@ class Despesas extends React.Component {
   }
 
   addExpenses = async () => {
-    // eslint-disable-next-line react/prop-types
     const { dispatch } = this.props;
+    console.log(typeof dispatch);
     const data = await getCurrencies();
     const filterData = data;
     delete filterData.USDT;
@@ -47,7 +47,6 @@ class Despesas extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line react/prop-types
     const { currencies } = this.props;
     const data = [...currencies];
     const { value, description, currency, method, tag } = this.state;
@@ -144,12 +143,14 @@ class Despesas extends React.Component {
   }
 }
 
-Despesas.propType = {
-  currencies: PropTypes.arrayOf(PropTypes.object),
+Expenses.propTypes = {
+  currencies: PropTypes.array,
+  dispatch: PropTypes.func,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
-  currencies: [...state.wallet.currencies],
+  currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Despesas);
+export default connect(mapStateToProps)(Expenses);
