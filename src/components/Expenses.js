@@ -150,7 +150,7 @@ Expenses.propTypes = {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
-  expenses: state.wallet.expenses,
+  // expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(Expenses);
