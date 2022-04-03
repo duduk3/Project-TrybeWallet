@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { actionThunkCurrencies } from '../actions';
+import { actionRemoveExpense, actionThunkCurrencies } from '../actions';
 import Header from '../components/Header';
 import Expenses from '../components/Expenses';
 
 class Wallet extends React.Component {
   componentDidMount() {
-    const { wallet } = this.props;
-    wallet();
+    const { dispatch } = this.props;
+    // wallet();
+    dispatch(actionThunkCurrencies());
+  }
+
+  delExpense = (despesa) => {
+    const { expenses, dispatch } = this.props;
+    const delExpense = expenses.filter((elem) => elem !== despesa);
+    dispatch(actionRemoveExpense(delExpense));
   }
 
   render() {
@@ -63,7 +70,15 @@ class Wallet extends React.Component {
                   <td>
                     Real
                   </td>
-                  <td><button type="button">Editar/Excluir</button></td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={ () => this.delExpense(despesa) }
+                      data-testid="delete-btn"
+                    >
+                      Editar/Excluir
+                    </button>
+                  </td>
                 </tr>
               ))
             }
@@ -84,8 +99,8 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  wallet: () => dispatch(actionThunkCurrencies()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   wallet: () => dispatch(actionThunkCurrencies()),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps)(Wallet);

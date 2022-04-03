@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getCurrencies from '../services/Api';
-import { actionAddExpenses } from '../actions';
+import { actionAddExpense } from '../actions';
 
 class Expenses extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Expenses extends React.Component {
     delete filterData.USDT;
     this.setState({ exchangeRates: filterData });
 
-    dispatch(actionAddExpenses(this.state));
+    dispatch(actionAddExpense(this.state));
 
     this.setState((prev) => ({ id: prev.id + 1 }));
     this.setState({
