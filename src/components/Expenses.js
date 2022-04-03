@@ -18,14 +18,27 @@ class Expenses extends React.Component {
     };
   }
 
+  validateInputs = () => {
+    const { value, description, currency, method, tag } = this.state;
+    if (parseFloat(value) === undefined) {
+      return 'Erro: decimal não aceita vírgula!!!';
+    }
+    if (value === '' || description === ''
+    || currency === '' || method === '' || tag === '') {
+      return 'Erro: algum campo está vazio!!!';
+    }
+  }
+
   addExpenses = async () => {
     const { dispatch } = this.props;
-    console.log(typeof dispatch);
+
     const data = await getCurrencies();
     const filterData = data;
     delete filterData.USDT;
     this.setState({ exchangeRates: filterData });
+
     dispatch(actionAddExpenses(this.state));
+
     this.setState((prev) => ({ id: prev.id + 1 }));
     this.setState({
       value: '',
@@ -43,6 +56,10 @@ class Expenses extends React.Component {
   }
 
   handleClick = () => {
+    if (this.validateInputs === 'Erro: decimal não aceita vírgula!!!'
+      || this.validateInputs() === 'Erro: algum campo está vazio!!!') {
+      return;
+    }
     this.addExpenses();
   }
 
@@ -58,6 +75,7 @@ class Expenses extends React.Component {
             <input
               type="text"
               name="value"
+              placeholder="0.00"
               data-testid="value-input"
               onChange={ this.handleChange }
               value={ value }
@@ -105,7 +123,7 @@ class Expenses extends React.Component {
               onChange={ this.handleChange }
               value={ method }
             >
-              <option value="" disabled hidden>Escolha a forma</option>
+              <option value="" disabled hidden>escolha a forma</option>
               <option value="Dinheiro">Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
               <option value="Cartão de débito">Cartão de débito</option>
@@ -122,7 +140,7 @@ class Expenses extends React.Component {
               onChange={ this.handleChange }
               value={ tag }
             >
-              <option value="" hidden>Escolha o tipo</option>
+              <option value="" hidden>escolha o tipo</option>
               <option value="Alimentação">Alimentação</option>
               <option value="Lazer">Lazer</option>
               <option value="Trabalho">Trabalho</option>
