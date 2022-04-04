@@ -18,6 +18,14 @@ class FormExpenses extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { expenses } = this.props;
+    if (expenses.length > 0) {
+      const lastId = expenses[expenses.length - 1];
+      this.setState({ id: lastId.id + 1 });
+    }
+  }
+
   validateInputs = () => {
     const { value, description, currency, method, tag } = this.state;
     if (parseFloat(value) === undefined) {
@@ -163,12 +171,13 @@ class FormExpenses extends React.Component {
 
 FormExpenses.propTypes = {
   currencies: PropTypes.array,
+  expenses: PropTypes.array,
   dispatch: PropTypes.func,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
-  // expenses: state.wallet.expenses,
+  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(FormExpenses);

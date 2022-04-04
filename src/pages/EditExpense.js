@@ -14,7 +14,7 @@ class EditExpense extends React.Component {
 
 EditExpense.propTypes = {
   expenses: PropTypes.array,
-  // dispatch: PropTypes.func,
+  despesa: PropTypes.object,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
