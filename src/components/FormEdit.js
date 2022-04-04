@@ -13,17 +13,20 @@ class FormEdit extends React.Component {
       currency: '',
       method: '',
       tag: '',
+      currencies: [],
     };
   }
 
   componentDidMount() {
-    const { despesa } = this.props;
+    const { edit, currencies } = this.props;
     this.setState({
-      value: despesa.value,
-      description: despesa.description,
-      currency: despesa.currency,
-      method: despesa.method,
-      tag: despesa.tag,
+      id: edit.id,
+      value: edit.value,
+      description: edit.description,
+      currency: edit.currency,
+      method: edit.method,
+      tag: edit.tag,
+      currencies,
     });
   }
 
@@ -39,22 +42,23 @@ class FormEdit extends React.Component {
   }
 
   editExpense = async () => {
-    const { dispatch, despesa, expenses, history } = this.props;
-    const { value, description, currency, method, tag } = this.state;
-    const newExpense = despesa;
-    if (value !== despesa.value || description !== despesa.description
-      || currency !== despesa.currency || method !== despesa.method
-      || tag !== despesa.tag) {
+    const { dispatch, edit, expenses, finishedEdit } = this.props;
+    const { id, value, description, currency, method, tag } = this.state;
+    const newExpense = edit;
+    if (value !== edit.value || description !== edit.description
+      || currency !== edit.currency || method !== edit.method
+      || tag !== edit.tag) {
+      newExpense.id = id;
       newExpense.value = value;
       newExpense.description = description;
       newExpense.method = method;
       newExpense.currency = currency;
       newExpense.tag = tag;
       const allExpenses = expenses;
-      allExpenses[despesa] = newExpense;
+      allExpenses[edit] = newExpense;
       dispatch(actionEditExpense(allExpenses));
     }
-    history.push('/carteira');
+    finishedEdit(true);
   }
 
   handleChange = ({ target }) => {
@@ -72,9 +76,8 @@ class FormEdit extends React.Component {
   }
 
   render() {
-    const { currencies } = this.props;
-    const { value, description, currency, method, tag } = this.state;
-    const data = [...currencies];
+    const { value, description, currency, method, tag, currencies } = this.state;
+    const data = currencies;
     return (
       <main>
         <form>
@@ -109,11 +112,11 @@ class FormEdit extends React.Component {
               id="currency"
               onChange={ this.handleChange }
               value={ currency }
+              data-testid="currency-input"
             >
-              <option key="0" value="" disabled hidden>escolha a moeda</option>
               {
                 data.map((elem, i) => (
-                  <option value={ elem } key={ i + 1 }>
+                  <option value={ elem } key={ i }>
                     {elem}
                   </option>
                 ))
@@ -131,7 +134,6 @@ class FormEdit extends React.Component {
               onChange={ this.handleChange }
               value={ method }
             >
-              <option value="" disabled hidden>escolha a forma</option>
               <option value="Dinheiro">Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
               <option value="Cartão de débito">Cartão de débito</option>
@@ -148,7 +150,6 @@ class FormEdit extends React.Component {
               onChange={ this.handleChange }
               value={ tag }
             >
-              <option value="" hidden>escolha o tipo</option>
               <option value="Alimentação">Alimentação</option>
               <option value="Lazer">Lazer</option>
               <option value="Trabalho">Trabalho</option>

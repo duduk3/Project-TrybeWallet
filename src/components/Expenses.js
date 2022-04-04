@@ -10,14 +10,6 @@ class Expenses extends React.Component {
     dispatch(actionThunkCurrencies());
   }
 
-  editExpense = (despesa) => {
-    const { history } = this.props;
-    history.push({
-      pathname: '/edit-expense',
-      state: { despesa },
-    });
-  }
-
   delExpense = (despesa) => {
     const { expenses, dispatch } = this.props;
     const delExpense = expenses.filter((elem) => elem !== despesa);
@@ -25,7 +17,7 @@ class Expenses extends React.Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, edit } = this.props;
     const despesas = [...expenses];
     return (
       <main>
@@ -56,8 +48,10 @@ class Expenses extends React.Component {
                   <td>
                     {despesa.currency === 'USD' && 'Dólar Comercial'}
                     {despesa.currency === 'EUR' && 'Euro'}
+                    {despesa.currency === 'CAD' && 'Dólar Canadense'}
                     {despesa.currency !== 'USD'
                       && despesa.currency !== 'EUR'
+                      && despesa.currency !== 'CAD'
                       && despesa.currency}
                   </td>
                   <td>
@@ -77,8 +71,7 @@ class Expenses extends React.Component {
                   <td>
                     <button
                       type="button"
-                      key={ despesa.id }
-                      onClick={ () => this.editExpense(despesa) }
+                      onClick={ () => edit(despesa) }
                       data-testid="edit-btn"
                     >
                       Editar
